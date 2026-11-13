@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ design tokens
+   One list of colours for the whole app. The accents come from the Tradyn artwork:
+   the emblem's green and red, and the wordmark's purple (used only for the simulator). */
+:root {
+  --background: #f3f6fb;
+  --surface: #ffffff;
+  --surface-2: #f1f4fa;
+  --surface-3: #e8edf6;
+  --border: #dfe5f0;
+  --border-strong: #c6cfdf;
+  --foreground: #0e1424;
+  --muted: #536079;
+  --faint: #7c889f;
+  --brand: #0c9a48;
+  --brand-strong: #087a38;
+  --brand-fg: #ffffff;
+  --brand-soft: rgb(12 154 72 / 0.1);
+  --up: #0a8a41;
+  --up-soft: rgb(10 138 65 / 0.1);
+  --down: #d42a48;
+  --down-soft: rgb(212 42 72 / 0.09);
+  --warn: #a8690a;
+  --warn-soft: rgb(168 105 10 / 0.11);
+  --info: #2459d8;
+  --info-soft: rgb(36 89 216 / 0.09);
+  --sim: #6a45e6;
+  --sim-soft: rgb(106 69 230 / 0.1);
+  --ring: rgb(12 154 72 / 0.45);
+  --shadow-card: 0 1px 2px rgb(14 20 36 / 0.04), 0 8px 24px -12px rgb(14 20 36 / 0.1);
+  --shadow-pop: 0 12px 40px -8px rgb(14 20 36 / 0.22), 0 2px 6px rgb(14 20 36 / 0.06);
+  --glow-a: rgb(12 154 72 / 0.07);
+  --glow-b: rgb(106 69 230 / 0.06);
+  --tile-hi: rgb(255 255 255 / 0.9);
+  color-scheme: light;
+}
+
+.dark {
+  --background: #070c18;
+  --surface: #0d1425;
+  --surface-2: #131c31;
+  --surface-3: #1a2540;
+  --border: #1c2742;
+  --border-strong: #2b3959;
+  --foreground: #eaeef8;
+  --muted: #9aa7c0;
+  --faint: #65738f;
+  --brand: #34e06c;
+  --brand-strong: #5bf08a;
+  --brand-fg: #04130a;
+  --brand-soft: rgb(52 224 108 / 0.12);
+  --up: #34d877;
+  --up-soft: rgb(52 216 119 / 0.13);
+  --down: #ff5470;
+  --down-soft: rgb(255 84 112 / 0.13);
+  --warn: #f6b84b;
+  --warn-soft: rgb(246 184 75 / 0.13);
+  --info: #62a8ff;
+  --info-soft: rgb(98 168 255 / 0.13);
+  --sim: #a488ff;
+  --sim-soft: rgb(164 136 255 / 0.14);
+  --ring: rgb(52 224 108 / 0.5);
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.7);
+  --shadow-pop: 0 20px 50px -10px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.04);
+  --glow-a: rgb(52 224 108 / 0.07);
+  --glow-b: rgb(164 136 255 / 0.07);
+  --tile-hi: rgb(255 255 255 / 0.06);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-soft: var(--brand-soft);
+  --color-up: var(--up);
+  --color-up-soft: var(--up-soft);
+  --color-down: var(--down);
+  --color-down-soft: var(--down-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-sim: var(--sim);
+  --color-sim-soft: var(--sim-soft);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+  --radius-card: 14px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background:
+      radial-gradient(900px 480px at 12% -10%, var(--glow-a), transparent 70%),
+      radial-gradient(800px 460px at 96% -8%, var(--glow-b), transparent 70%),
+      var(--background);
+    background-attachment: fixed;
+    color: var(--foreground);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--brand-soft);
+  }
+  button, [role="button"], a, summary, select, label[for] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  /* Scroll containers hold their own absolutely positioned children (e.g. screen-reader labels in
+     table rows); otherwise those escape the scroller and widen the whole page on phones. */
+  .overflow-auto,
+  .overflow-x-auto {
+    position: relative;
+  }
+}
+
+@layer utilities {
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+}
+
+/* Icon tile: one treatment for every icon container (sidebar, cards, empty states, buttons). */
+.icon-tile {
+  --tone: var(--muted);
+  --tone-soft: var(--surface-2);
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  color: var(--tone);
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--tone) 22%, var(--border));
+  background: linear-gradient(180deg, var(--tile-hi), transparent 60%), var(--tone-soft);
+  box-shadow: 0 1px 0 var(--tile-hi) inset;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+.icon-tile[data-tone="brand"] { --tone: var(--brand); --tone-soft: var(--brand-soft); }
+.icon-tile[data-tone="up"] { --tone: var(--up); --tone-soft: var(--up-soft); }
+.icon-tile[data-tone="down"] { --tone: var(--down); --tone-soft: var(--down-soft); }
+.icon-tile[data-tone="warn"] { --tone: var(--warn); --tone-soft: var(--warn-soft); }
+.icon-tile[data-tone="info"] { --tone: var(--info); --tone-soft: var(--info-soft); }
+.icon-tile[data-tone="sim"] { --tone: var(--sim); --tone-soft: var(--sim-soft); }
+.group\/tile:hover .icon-tile,
+.icon-tile[data-active="true"] {
+  border-color: color-mix(in srgb, var(--tone) 45%, var(--border));
+  box-shadow: 0 1px 0 var(--tile-hi) inset, 0 0 0 3px color-mix(in srgb, var(--tone) 12%, transparent), 0 6px 16px -8px color-mix(in srgb, var(--tone) 55%, transparent);
+}
+.group\/tile:hover .icon-tile {
+  transform: translateY(-1px);
+}
+/* neutral icons brighten to the text colour on hover, so every icon answers the pointer */
+.group\/tile:hover .icon-tile[data-tone="neutral"]:not([data-active="true"]) {
+  --tone: var(--foreground);
+  box-shadow: 0 1px 0 var(--tile-hi) inset, 0 0 0 3px color-mix(in srgb, var(--tone) 7%, transparent), 0 4px 12px -8px color-mix(in srgb, var(--tone) 30%, transparent);
+}
+.group\/tile:active .icon-tile {
+  transform: translateY(0);
+  transition-duration: 0.06s;
+}
+.icon-tile svg {
+  filter: drop-shadow(0 0 0.35px currentColor);
+}
+
+/* The emblem's own dark tile — the same presentation as the app / browser icons, on both themes.
+   A faint top sheen and inner hairline give it depth; the glow uses the emblem's own green. */
+.brand-tile {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border-radius: 24%;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgb(255 255 255 / 0.09), transparent 60%),
+    linear-gradient(180deg, #19233d, #070b16);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.09),
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 8px 20px -10px rgb(4 8 18 / 0.75),
+    0 0 20px -8px rgb(52 224 108 / 0.42);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.brand-tile img {
+  filter: drop-shadow(0 0 3px rgb(52 224 108 / 0.18));
+}
+:root:not(.dark) .brand-tile {
+  /* on light surfaces a softer drop shadow; the green halo would look smudgy on white */
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 6px 16px -8px rgb(14 20 36 / 0.45),
+    0 1px 2px rgb(14 20 36 / 0.15);
+}
+a:hover > .brand-tile,
+.brand-tile:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.12),
+    inset 0 1px 0 rgb(255 255 255 / 0.14),
+    0 10px 24px -10px rgb(4 8 18 / 0.8),
+    0 0 26px -6px rgb(52 224 108 / 0.6);
+}
+:root:not(.dark) a:hover > .brand-tile,
+:root:not(.dark) .brand-tile:hover {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.1),
+    inset 0 1px 0 rgb(255 255 255 / 0.14),
+    0 8px 20px -8px rgb(14 20 36 / 0.5),
+    0 0 18px -6px rgb(12 154 72 / 0.45);
+}
+.brand-word img,
+.brand-full img {
+  user-select: none;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.live-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* TradingView Lightweight Charts attribution link: keep it readable on both themes. */
+#tv-attr-logo {
+  opacity: 0.55;
+}
